@@ -28,16 +28,16 @@ class DataBaseHelper(private val context: Context) :
         val dbFile = context.getDatabasePath("$DATABASE_NAME.db")
 
         if (!dbFile.exists()) {
-            try {
+//            try {
                 val checkDb =
                     context.openOrCreateDatabase("$DATABASE_NAME.db", Context.MODE_PRIVATE, null)
                 checkDb.close()
                 copyDatabase(dbFile)
-            } catch (e: IOException) {
+            /*} catch (e: IOException) {
                 e.printStackTrace()
-            }
+            }*/
         }
-        return SQLiteDatabase.openDatabase(dbFile.path, null, SQLiteDatabase.OPEN_READONLY)
+        return SQLiteDatabase.openDatabase(dbFile.path, null, SQLiteDatabase.OPEN_READWRITE)
     }
 
     private fun copyDatabase(dbFile: File) {
@@ -52,6 +52,8 @@ class DataBaseHelper(private val context: Context) :
     }
 
     fun closeDb() = database.close()
+
+//    fun getListOfDepartments():List<>
 
     companion object {
         private const val DATABASE_NAME = "Project418"
