@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.project418.databinding.FragmentLoginBinding
+<<<<<<< HEAD
 import com.example.project418.models.Department
+=======
+>>>>>>> origin/master
 import com.github.terrakok.cicerone.Router
 
 class LoginFragment(private val router: Router) : Fragment() {
@@ -30,10 +33,14 @@ class LoginFragment(private val router: Router) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnLogin.setOnClickListener {
+<<<<<<< HEAD
             val userLogin = binding.etLogin.text.toString()
             val userPassword = binding.etPassword.text.toString()
 
             viewModel.auth(Department(login = userLogin, password = userPassword), requireContext())
+=======
+
+>>>>>>> origin/master
         }
     }
 }

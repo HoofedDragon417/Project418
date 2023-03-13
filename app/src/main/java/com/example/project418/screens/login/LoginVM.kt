@@ -1,5 +1,6 @@
 package com.example.project418.screens.login
 
+<<<<<<< HEAD
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.example.project418.common.BaseVM
@@ -22,4 +23,9 @@ class LoginVM : BaseVM() {
             }
         }
     }
+=======
+import com.example.project418.common.BaseVM
+
+class LoginVM : BaseVM() {
+>>>>>>> origin/master
 }
