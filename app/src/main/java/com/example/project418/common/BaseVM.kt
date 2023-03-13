@@ -5,7 +5,7 @@ import com.github.terrakok.cicerone.Router
 
 open class BaseVM:ViewModel() {
     private var _router: Router? = null
-    private val router get() = requireNotNull(_router)
+    val router get() = requireNotNull(_router)
 
     fun setRouter(router: Router) {
         _router = router
