@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.project418.models.Department
+import com.example.project418.models.Teachers
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -77,9 +78,41 @@ class DataBaseHelper(private val context: Context) :
         return returnList
     }
 
+    fun getListOfTeachers(): List<Teachers> {
+        val returnList = mutableListOf<Teachers>()
+
+        val selectQuery =
+            "select $ID_FIELD, $LAST_NAME_FIELD, $FIRST_NAME_FIELD, $MIDDLE_NAME_FIELD" +
+                    " from $TEACHER_TABLE"
+        val cursor: Cursor = database.rawQuery(selectQuery, null)
+
+        if (cursor.moveToFirst())
+            do {
+                returnList.add(
+                    Teachers(
+                        id = cursor.getInt(0),
+                        lastName = cursor.getString(1),
+                        firstName = cursor.getString(2),
+                        middleName = cursor.getString(3)
+                    )
+                )
+            } while (cursor.moveToNext())
+
+        cursor.close()
+
+        return returnList
+    }
+
     companion object {
         private const val DATABASE_NAME = "Project418"
         private const val DATABASE_VERSION = 1
+
         private const val DEPARTMENT_TABLE = "Department"
+        private const val TEACHER_TABLE = "Teacher"
+
+        private const val ID_FIELD = "ID"
+        private const val FIRST_NAME_FIELD = "First_Name"
+        private const val LAST_NAME_FIELD = "Last_Name"
+        private const val MIDDLE_NAME_FIELD = "Middle_Name"
     }
 }

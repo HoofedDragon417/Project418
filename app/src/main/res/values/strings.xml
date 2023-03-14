@@ -15,4 +15,6 @@
     <string name="student">Student</string>
     <string name="subject">Subject</string>
     <string name="teachers">Teachers</string>
+
+    <string name="teacher_fio">%s %s %s</string>
 </resources>
