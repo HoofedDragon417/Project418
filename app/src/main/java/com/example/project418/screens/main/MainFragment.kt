@@ -36,9 +36,9 @@ class MainFragment(private val router: Router) : Fragment() {
         val fragments = listOf(TeachersFragment(), StudentsFragment(), SubjectsFragment())
 
         val tabs = listOf(
-            getString(R.string.teachers),
-            getString(R.string.student),
-            getString(R.string.subject)
+            getString(R.string.teachers_title),
+            getString(R.string.student_title),
+            getString(R.string.subject_title)
         )
 
         binding.pager.adapter = ViewPagerAdapter(requireActivity(), fragments)

@@ -7,31 +7,24 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_marginStart="4dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_student_fio"
+            android:id="@+id/tv_subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            tools:hint="@string/fio" />
+            tools:hint="@string/subject" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_student_group"
+            android:id="@+id/tv_type_of_work"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            tools:hint="@string/student_group" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_student_course"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            tools:hint="@string/student_course" />
-
+            tools:hint="@string/type_of_work" />
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 
 </com.google.android.material.card.MaterialCardView>

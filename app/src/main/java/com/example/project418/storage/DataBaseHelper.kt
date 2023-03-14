@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.project418.models.Department
 import com.example.project418.models.Student
+import com.example.project418.models.Subject
 import com.example.project418.models.Teachers
 import java.io.File
 import java.io.FileOutputStream
@@ -132,6 +133,36 @@ class DataBaseHelper(private val context: Context) :
         return returnList
     }
 
+    fun getListOfSubjects(): List<Subject> {
+        val returnList = mutableListOf<Subject>()
+
+        val selectQuery =
+            "select $ID_FIELD, $TITLE_FIELD, " +
+                    "(select $TITLE_FIELD from $TYPE_OF_WORK_TABLE " +
+                    "where $ID_FIELD = $SUBJECT_TABLE.$SUBJECT_TYPE_OF_WORK_FIELD) as TOW " +
+                    "from $SUBJECT_TABLE where $SUBJECT_DEPARTMENT_ID_FIELD = ${
+                        SharedPreference(
+                            context
+                        ).getID()
+                    }"
+        val cursor: Cursor = database.rawQuery(selectQuery, null)
+
+        if (cursor.moveToFirst())
+            do {
+                returnList.add(
+                    Subject(
+                        id = cursor.getInt(0),
+                        title = cursor.getString(1),
+                        typeOfWork = cursor.getString(2)
+                    )
+                )
+            } while (cursor.moveToNext())
+
+        cursor.close()
+
+        return returnList
+    }
+
     companion object {
         private const val DATABASE_NAME = "Project418"
         private const val DATABASE_VERSION = 1
@@ -140,6 +171,8 @@ class DataBaseHelper(private val context: Context) :
         private const val TEACHER_TABLE = "Teacher"
         private const val STUDENT_TABLE = "Student"
         private const val MAJOR_TABLE = "Major"
+        private const val SUBJECT_TABLE = "Subject"
+        private const val TYPE_OF_WORK_TABLE = "Type_Of_Work"
 
         private const val ID_FIELD = "ID"
         private const val TITLE_FIELD = "Title"
@@ -151,5 +184,8 @@ class DataBaseHelper(private val context: Context) :
         private const val STUDENT_GROUP_FIELD = "[Group]"
         private const val STUDENT_COURSE_FIELD = "Course"
         private const val STUDENT_MAJOR_ID_FIELD = "Major_ID"
+
+        private const val SUBJECT_TYPE_OF_WORK_FIELD = "Type_Of_Work_ID"
+        private const val SUBJECT_DEPARTMENT_ID_FIELD = "Department_ID"
     }
 }

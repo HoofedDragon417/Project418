@@ -12,12 +12,15 @@
     <string name="subject_fragment">Subject fragment</string>
     <string name="teachers_fragment">Teachers fragment</string>
 
-    <string name="student">Student</string>
-    <string name="subject">Subject</string>
-    <string name="teachers">Teachers</string>
+    <string name="student_title">Student</string>
+    <string name="subject_title">Subject</string>
+    <string name="teachers_title">Teachers</string>
 
     <string name="fio">%s %s %s</string>
 
     <string name="student_group">Group %s</string>
     <string name="student_course">Course %d</string>
+
+    <string name="subject">%s</string>
+    <string name="type_of_work">Type of work: %s</string>
 </resources>

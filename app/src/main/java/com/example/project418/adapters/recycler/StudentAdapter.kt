@@ -14,14 +14,14 @@ class StudentAdapter(private val context: Context, private val items: List<Stude
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = items[position]
-            binding.studentFio.text = context.getString(
+            binding.tvStudentFio.text = context.getString(
                 R.string.fio,
                 item.lastName,
                 item.firstName,
                 item.middleName
             )
-            binding.studentGroup.text = context.getString(R.string.student_group, item.group)
-            binding.studentCourse.text = context.getString(R.string.student_course, item.course)
+            binding.tvStudentGroup.text = context.getString(R.string.student_group, item.group)
+            binding.tvStudentCourse.text = context.getString(R.string.student_course, item.course)
         }
     }
 

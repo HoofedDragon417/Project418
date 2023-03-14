@@ -14,7 +14,7 @@ class TeachersAdapter(private val context: Context, private val items: List<Teac
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = items[position]
-            binding.teacherFioField.text = context.getString(
+            binding.tvTeacherFioField.text = context.getString(
                 R.string.fio,
                 item.lastName,
                 item.firstName,
