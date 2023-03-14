@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.textview.MaterialTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/teacher_fio_field"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="4dp"
+    android:textSize="24sp"
+    tools:hint="@string/fio">
 
-    <TextView
-        android:id="@+id/teacher_fio_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        tools:hint="@string/teacher_fio" />
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.textview.MaterialTextView>

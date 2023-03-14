@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.project418.models.Department
+import com.example.project418.models.Student
 import com.example.project418.models.Teachers
 import java.io.File
 import java.io.FileOutputStream
@@ -103,16 +104,52 @@ class DataBaseHelper(private val context: Context) :
         return returnList
     }
 
+    fun getListOfStudents(): List<Student> {
+        val returnList = mutableListOf<Student>()
+
+        val selectQuery =
+            "select $ID_FIELD, $LAST_NAME_FIELD, $FIRST_NAME_FIELD, $MIDDLE_NAME_FIELD," +
+                    "(select $TITLE_FIELD from $MAJOR_TABLE where $ID_FIELD = $STUDENT_TABLE.$STUDENT_MAJOR_ID_FIELD)||$STUDENT_GROUP_FIELD as SG," +
+                    "$STUDENT_COURSE_FIELD from $STUDENT_TABLE"
+        val cursor: Cursor = database.rawQuery(selectQuery, null)
+
+        if (cursor.moveToFirst())
+            do {
+                returnList.add(
+                    Student(
+                        id = cursor.getInt(0),
+                        lastName = cursor.getString(1),
+                        firstName = cursor.getString(2),
+                        middleName = cursor.getString(3),
+                        group = cursor.getString(4),
+                        course = cursor.getInt(5)
+                    )
+                )
+            } while (cursor.moveToNext())
+
+        cursor.close()
+
+        return returnList
+    }
+
     companion object {
         private const val DATABASE_NAME = "Project418"
         private const val DATABASE_VERSION = 1
 
         private const val DEPARTMENT_TABLE = "Department"
         private const val TEACHER_TABLE = "Teacher"
+        private const val STUDENT_TABLE = "Student"
+        private const val MAJOR_TABLE = "Major"
 
         private const val ID_FIELD = "ID"
+        private const val TITLE_FIELD = "Title"
+
         private const val FIRST_NAME_FIELD = "First_Name"
         private const val LAST_NAME_FIELD = "Last_Name"
         private const val MIDDLE_NAME_FIELD = "Middle_Name"
+
+        private const val STUDENT_GROUP_FIELD = "[Group]"
+        private const val STUDENT_COURSE_FIELD = "Course"
+        private const val STUDENT_MAJOR_ID_FIELD = "Major_ID"
     }
 }

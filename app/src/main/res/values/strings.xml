@@ -16,5 +16,8 @@
     <string name="subject">Subject</string>
     <string name="teachers">Teachers</string>
 
-    <string name="teacher_fio">%s %s %s</string>
+    <string name="fio">%s %s %s</string>
+
+    <string name="student_group">Group %s</string>
+    <string name="student_course">Course %d</string>
 </resources>

@@ -12,10 +12,10 @@ class TeachersAdapter(private val context: Context, private val items: List<Teac
     RecyclerView.Adapter<TeachersAdapter.TeacherViewHolder>() {
     inner class TeacherViewHolder(private val binding: RecyclerTeachersBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bing(position: Int) {
+        fun bind(position: Int) {
             val item = items[position]
             binding.teacherFioField.text = context.getString(
-                R.string.teacher_fio,
+                R.string.fio,
                 item.lastName,
                 item.firstName,
                 item.middleName
@@ -30,5 +30,5 @@ class TeachersAdapter(private val context: Context, private val items: List<Teac
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: TeacherViewHolder, position: Int) = holder.bing(position)
+    override fun onBindViewHolder(holder: TeacherViewHolder, position: Int) = holder.bind(position)
 }
