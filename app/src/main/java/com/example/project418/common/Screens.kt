@@ -1,7 +1,7 @@
 package com.example.project418.common
 
 import com.example.project418.screens.login.LoginFragment
-import com.example.project418.screens.MainFragment
+import com.example.project418.screens.main.MainFragment
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
