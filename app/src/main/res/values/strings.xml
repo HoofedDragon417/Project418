@@ -32,8 +32,10 @@
     <string name="title_of_work">Title of work</string>
     <string name="create_qr_for_student">Create QR for student</string>
 
+    <string name="title_recycler">Title: %s</string>
     <string name="student_recycler">Student: %s</string>
     <string name="subject_recycler">Subject: %s</string>
     <string name="teacher_recycler">Teacher: %s</string>
-    <string name="registration_date">Registration date: dd/MM/yyyy HH:mm</string>
+    <string name="registration_pattern">dd/MM/yyyy HH:mm</string>
+    <string name="registration_date">Registration date: %s</string>
 </resources>

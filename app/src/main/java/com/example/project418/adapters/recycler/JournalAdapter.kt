@@ -17,13 +17,15 @@ class JournalAdapter(private val context: Context, private val items: List<Journ
         fun bind(position: Int) {
             val item = items[position]
 
-            val pattern = context.getString(R.string.registration_date)
+            val pattern = context.getString(R.string.registration_pattern)
             val sdf = SimpleDateFormat(pattern, Locale.getDefault())
 
+            binding.tvTitleOfWork.text = context.getString(R.string.title_recycler, item.title)
             binding.tvStudent.text = context.getString(R.string.student_recycler, item.student)
             binding.tvSubject.text = context.getString(R.string.subject_recycler, item.subject)
             binding.tvTeacher.text = context.getString(R.string.teacher_recycler, item.teacher)
-            binding.tvRegistrationData.text = sdf.format(item.registrationData)
+            binding.tvRegistrationData.text =
+                context.getString(R.string.registration_date, sdf.format(item.registrationData))
         }
     }
 
