@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Project418</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="department">Department</string>
+    <string name="password">Password</string>
+
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+
+    <string name="student_fragment">Student fragment</string>
+    <string name="subject_fragment">Subject fragment</string>
+    <string name="teachers_fragment">Teachers fragment</string>
+
+    <string name="student_title">Student</string>
+    <string name="subject_title">Subject</string>
+    <string name="teachers_title">Teachers</string>
+    <string name="type_of_work_title">Type of work</string>
+    <string name="journal_title">Journal</string>
+
+    <string name="fio">%s %s %s</string>
+
+    <string name="student_group">Group %s</string>
+    <string name="student_course">Course %d</string>
+
+    <string name="subject">%s</string>
+    <string name="type_of_work">Type of work: %s</string>
+    <string name="show_more_buttons">Show more buttons</string>
+    <string name="generate_qr">Generate QR</string>
+    <string name="complete_registration">Complete registration</string>
+    <string name="confirm">Confirm</string>
+    <string name="title_of_work">Title of work</string>
+    <string name="create_qr_for_student">Create QR for student</string>
+
+    <string name="student_recycler">Student: %s</string>
+    <string name="subject_recycler">Subject: %s</string>
+    <string name="teacher_recycler">Teacher: %s</string>
+    <string name="registration_date">Registration date: dd/MM/yyyy HH:mm</string>
+</resources>
