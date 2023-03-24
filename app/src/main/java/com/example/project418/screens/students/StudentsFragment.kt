@@ -1,4 +1,4 @@
-package com.example.project418.screens.journal
+package com.example.project418.screens.students
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,24 +7,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.project418.adapters.recycler.JournalAdapter
+import com.example.project418.adapters.recycler.StudentAdapter
 import com.example.project418.databinding.FragmentRecyclerBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-class JournalFragment : Fragment() {
+class StudentsFragment : Fragment() {
+
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: JournalVM by viewModels()
+    private val viewModel: StudentsVM by viewModels{
+        StudentsVM.Factory(requireContext().applicationContext)
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.getJournal(requireContext())
+        viewModel.getStudents(requireContext())
         _binding = FragmentRecyclerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -33,8 +35,8 @@ class JournalFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch {
-            viewModel.recordsInJournal.onEach {
-                binding.recycler.adapter = JournalAdapter(requireContext(), it)
+            viewModel.listOfStudents.onEach {
+                binding.recycler.adapter = StudentAdapter(requireContext(), it)
             }.collect()
         }
     }

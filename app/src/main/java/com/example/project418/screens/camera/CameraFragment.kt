@@ -1,4 +1,4 @@
-package com.example.project418.screeens.camera
+package com.example.project418.screens.camera
 
 import android.Manifest
 import android.os.Bundle

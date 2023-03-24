@@ -1,7 +1,8 @@
 package com.example.project418.screens.completeregistration
 
 import android.content.Context
-import android.widget.Toast
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.project418.common.BaseVM
 import com.example.project418.models.Teachers
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 
-class CompleteRegistrationVM : BaseVM() {
+class CompleteRegistrationVM(private val dataBaseHelper: DataBaseHelper) : BaseVM() {
     val student = MutableStateFlow("")
     val subject = MutableStateFlow("")
     val typeOfWork = MutableStateFlow("")
@@ -26,19 +27,19 @@ class CompleteRegistrationVM : BaseVM() {
 
     val errorMessage = MutableStateFlow<String?>(null)
 
-    fun getQrContent(qrContent: String, context: Context) {
+    fun getQrContent(qrContent: String) {
         viewModelScope.launch {
             val (studentID, subjectID, typeOfWorkID) = qrContent.split(",").map { it.toInt() }
 
             this@CompleteRegistrationVM.studentID = studentID
             this@CompleteRegistrationVM.subjectID = subjectID
 
-            student.value = DataBaseHelper(context).getStudent(studentID)
-            subject.value = DataBaseHelper(context).getSubject(subjectID)
-            typeOfWork.value = DataBaseHelper(context).getTypeOfWork(typeOfWorkID)
+            student.value = dataBaseHelper.getStudent(studentID)
+            subject.value = dataBaseHelper.getSubject(subjectID)
+            typeOfWork.value = dataBaseHelper.getTypeOfWork(typeOfWorkID)
 
             val listTeachers = mutableListOf<String>()
-            listOfTeachers = DataBaseHelper(context).getListOfTeachers()
+            listOfTeachers = dataBaseHelper.getListOfTeachers()
 
             for (teacher in listOfTeachers)
                 listTeachers.add("${teacher.lastName} ${teacher.firstName} ${teacher.middleName}")
@@ -52,29 +53,27 @@ class CompleteRegistrationVM : BaseVM() {
         }
     }
 
-    fun registrationWork(titleOfWork: String, context: Context) {
+    fun registrationWork(titleOfWork: String) {
         viewModelScope.launch {
             if (teacherPosition == -1)
                 errorMessage.value = "Choose teacher"
             else {
                 val registrationDate = Calendar.getInstance().timeInMillis
                 if (titleOfWork.isEmpty()) {
-                    val res = DataBaseHelper(context).registerTest(
+                    val res = dataBaseHelper.registerTest(
                         studentID,
                         subjectID,
                         listOfTeachers[teacherPosition].id,
                         registrationDate
                     )
-                    Toast.makeText(context, res.toString(), Toast.LENGTH_SHORT).show()
                 } else {
-                    val res = DataBaseHelper(context).registerCourseWork(
+                    val res = dataBaseHelper.registerCourseWork(
                         studentID,
                         subjectID,
                         listOfTeachers[teacherPosition].id,
                         titleOfWork,
                         registrationDate
                     )
-                    Toast.makeText(context, res.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -83,6 +82,17 @@ class CompleteRegistrationVM : BaseVM() {
     fun errorNull() {
         viewModelScope.launch {
             errorMessage.value = null
+        }
+    }
+
+    companion object {
+        fun Factory(context: Context): ViewModelProvider.Factory {
+            return object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    val db = DataBaseHelper(context)
+                    return CompleteRegistrationVM(db) as T
+                }
+            }
         }
     }
 }

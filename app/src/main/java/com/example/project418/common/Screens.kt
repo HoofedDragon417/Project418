@@ -2,7 +2,7 @@
 
 package com.example.project418.common
 
-import com.example.project418.screeens.camera.CameraFragment
+import com.example.project418.screens.camera.CameraFragment
 import com.example.project418.screens.completeregistration.CompleteRegistrationFragment
 import com.example.project418.screens.createqr.CreateQrFragment
 import com.example.project418.screens.login.LoginFragment

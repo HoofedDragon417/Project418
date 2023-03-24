@@ -5,6 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.project418.common.BaseVM
 import com.example.project418.models.Student
@@ -17,7 +19,8 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
-class CreateQrVM : BaseVM() {
+class CreateQrVM(private val context: Context, private val dataBaseHelper: DataBaseHelper) :
+    BaseVM() {
     private var listOfStudents = listOf<Student>()
     private var listOfSubjects = listOf<Subject>()
 
@@ -27,10 +30,10 @@ class CreateQrVM : BaseVM() {
     private var studentPosition = -1
     private var subjectPosition = -1
 
-    fun getLists(context: Context) {
+    fun getLists() {
         viewModelScope.launch {
-            listOfStudents = DataBaseHelper(context).getListOfStudents()
-            listOfSubjects = DataBaseHelper(context).getListOfSubjects()
+            listOfStudents = dataBaseHelper.getListOfStudents()
+            listOfSubjects = dataBaseHelper.getListOfSubjects()
 
             val listStudents = mutableListOf<String>()
             val listSubjects = mutableListOf<String>()
@@ -60,12 +63,12 @@ class CreateQrVM : BaseVM() {
         }
     }
 
-    fun generateQr(context: Context) {
+    fun generateQr() {
         viewModelScope.launch {
             if (studentPosition != -1 && subjectPosition != -1) {
                 val qrBitmap = generateBitmap()
 
-                saveQr(qrBitmap, context)
+                saveQr(qrBitmap)
             } else
                 Log.e(TAG, "Empty values")
         }
@@ -90,8 +93,8 @@ class CreateQrVM : BaseVM() {
         return bitmap
     }
 
-    private fun saveQr(currentBitmap: Bitmap, context: Context) {
-        val picturePath = getOutMediaPath(context)
+    private fun saveQr(currentBitmap: Bitmap) {
+        val picturePath = getOutMediaPath()
 
         try {
             val out = FileOutputStream(
@@ -110,7 +113,7 @@ class CreateQrVM : BaseVM() {
         }
     }
 
-    private fun getOutMediaPath(context: Context): File {
+    private fun getOutMediaPath(): File {
         val pathName =
             "${context.getExternalFilesDir(DIRECTORY_QR_CODES)}/${stringListOfStudents.value[studentPosition]}"
         val mediaStorage = File(pathName)
@@ -132,5 +135,15 @@ class CreateQrVM : BaseVM() {
         private const val DIRECTORY_QR_CODES = "QRCodes"
 
         private const val TAG = "QR generator"
+
+        fun Factory(context: Context): ViewModelProvider.Factory {
+            return object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    val db = DataBaseHelper(context)
+                    return CreateQrVM(context, db) as T
+                }
+            }
+        }
+
     }
 }

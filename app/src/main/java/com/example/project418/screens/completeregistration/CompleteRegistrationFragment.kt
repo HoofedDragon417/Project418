@@ -22,7 +22,11 @@ class CompleteRegistrationFragment(private val qrContent: String) : BaseFragment
     private var _binding: FragmentCompleteRegistrationBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: CompleteRegistrationVM by viewModels()
+    private val viewModel: CompleteRegistrationVM by viewModels {
+        CompleteRegistrationVM.Factory(
+            requireContext().applicationContext
+        )
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -33,7 +37,7 @@ class CompleteRegistrationFragment(private val qrContent: String) : BaseFragment
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.getQrContent(qrContent, requireContext())
+        viewModel.getQrContent(qrContent)
         _binding = FragmentCompleteRegistrationBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -53,7 +57,7 @@ class CompleteRegistrationFragment(private val qrContent: String) : BaseFragment
 
         binding.btn.setOnClickListener {
             val title = binding.etTitleOfWork.text.toString()
-            viewModel.registrationWork(title, requireContext())
+            viewModel.registrationWork(title)
         }
     }
 
