@@ -15,6 +15,7 @@ class CompleteRegistrationVM(private val dataBaseHelper: DataBaseHelper) : BaseV
     val student = MutableStateFlow("")
     val subject = MutableStateFlow("")
     val typeOfWork = MutableStateFlow("")
+    val titleEnable = MutableStateFlow(true)
 
     val stringListOfTeachers = MutableStateFlow(listOf<String>())
 
@@ -37,6 +38,9 @@ class CompleteRegistrationVM(private val dataBaseHelper: DataBaseHelper) : BaseV
             student.value = dataBaseHelper.getStudent(studentID)
             subject.value = dataBaseHelper.getSubject(subjectID)
             typeOfWork.value = dataBaseHelper.getTypeOfWork(typeOfWorkID)
+            if (typeOfWorkID == 2) {
+                titleEnable.value = false
+            }
 
             val listTeachers = mutableListOf<String>()
             listOfTeachers = dataBaseHelper.getListOfTeachers()
@@ -60,14 +64,14 @@ class CompleteRegistrationVM(private val dataBaseHelper: DataBaseHelper) : BaseV
             else {
                 val registrationDate = Calendar.getInstance().timeInMillis
                 if (titleOfWork.isEmpty()) {
-                    val res = dataBaseHelper.registerTest(
+                    dataBaseHelper.registerTest(
                         studentID,
                         subjectID,
                         listOfTeachers[teacherPosition].id,
                         registrationDate
                     )
                 } else {
-                    val res = dataBaseHelper.registerCourseWork(
+                    dataBaseHelper.registerCourseWork(
                         studentID,
                         subjectID,
                         listOfTeachers[teacherPosition].id,

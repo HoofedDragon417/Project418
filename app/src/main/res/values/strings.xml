@@ -8,6 +8,9 @@
     <string name="login">Login</string>
     <string name="logout">Logout</string>
 
+    <string name="login_error">Check your login</string>
+    <string name="password_error">Check your password</string>
+
     <string name="student_fragment">Student fragment</string>
     <string name="subject_fragment">Subject fragment</string>
     <string name="teachers_fragment">Teachers fragment</string>
@@ -38,4 +41,5 @@
     <string name="teacher_recycler">Teacher: %s</string>
     <string name="registration_pattern">dd/MM/yyyy HH:mm</string>
     <string name="registration_date">Registration date: %s</string>
+    <string name="authorization">Authorization</string>
 </resources>

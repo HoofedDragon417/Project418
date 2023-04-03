@@ -1,4 +1,4 @@
-package com.example.project418.screens.journal
+package com.example.project418.tabs.journal
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -15,7 +15,7 @@ class JournalVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
 
     fun getJournal() {
         viewModelScope.launch {
-            recordsInJournal.value=dataBaseHelper.getJournal()
+            recordsInJournal.value = dataBaseHelper.getJournal()
         }
     }
 

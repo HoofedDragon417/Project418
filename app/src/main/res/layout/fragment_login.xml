@@ -6,54 +6,77 @@
     android:layout_height="match_parent"
     tools:context=".screens.login.LoginFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_container"
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/authorization"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/fields_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/fields_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginEnd="80dp"
-        android:hint="@string/department"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_login"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/password_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
-        android:hint="@string/password"
-        app:endIconMode="password_toggle"
-        app:layout_constraintEnd_toEndOf="@id/login_container"
-        app:layout_constraintStart_toStartOf="@id/login_container"
-        app:layout_constraintTop_toBottomOf="@id/login_container">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_password"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:hint="@string/department"
+            app:errorEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_login"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="@id/login_container"
+            app:layout_constraintStart_toStartOf="@id/login_container"
+            app:layout_constraintTop_toBottomOf="@id/login_container">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="20dp"
+        android:layout_marginTop="8dp"
         android:text="@string/login"
-        app:layout_constraintEnd_toEndOf="@id/password_container"
-        app:layout_constraintStart_toStartOf="@id/password_container"
-        app:layout_constraintTop_toBottomOf="@id/password_container" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/fields_container"
+        app:layout_constraintStart_toStartOf="@+id/fields_container"
+        app:layout_constraintTop_toBottomOf="@+id/fields_container" />
 </androidx.constraintlayout.widget.ConstraintLayout>

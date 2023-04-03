@@ -1,4 +1,4 @@
-package com.example.project418.screens.students
+package com.example.project418.tabs.students
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,7 +26,7 @@ class StudentsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.getStudents(requireContext())
+        viewModel.getStudents()
         _binding = FragmentRecyclerBinding.inflate(inflater, container, false)
         return binding.root
     }

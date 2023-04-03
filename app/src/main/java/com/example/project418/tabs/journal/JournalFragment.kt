@@ -1,4 +1,4 @@
-package com.example.project418.screens.journal
+package com.example.project418.tabs.journal
 
 import android.os.Bundle
 import android.view.LayoutInflater

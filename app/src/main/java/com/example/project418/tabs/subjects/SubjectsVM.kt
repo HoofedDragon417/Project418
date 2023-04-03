@@ -1,20 +1,20 @@
-package com.example.project418.screens.students
+package com.example.project418.tabs.subjects
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.project418.models.Student
+import com.example.project418.models.Subject
 import com.example.project418.storage.DataBaseHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class StudentsVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
-    val listOfStudents = MutableStateFlow(listOf<Student>())
+class SubjectsVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
+    val listOfSubjects = MutableStateFlow(listOf<Subject>())
 
-    fun getStudents(context: Context) {
+    fun getSubjects() {
         viewModelScope.launch {
-            listOfStudents.value = dataBaseHelper.getListOfStudents()
+            listOfSubjects.value = dataBaseHelper.getListOfSubjects()
         }
     }
 
@@ -23,7 +23,7 @@ class StudentsVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
             return object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     val db = DataBaseHelper(context)
-                    return StudentsVM(db) as T
+                    return SubjectsVM(db) as T
                 }
             }
         }

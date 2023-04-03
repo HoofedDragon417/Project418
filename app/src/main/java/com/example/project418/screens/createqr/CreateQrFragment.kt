@@ -1,6 +1,5 @@
 package com.example.project418.screens.createqr
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,11 +21,6 @@ class CreateQrFragment : BaseFragment() {
     private val binding get() = requireNotNull(_binding)
 
     private val viewModel: CreateQrVM by viewModels { CreateQrVM.Factory(requireContext().applicationContext) }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        router?.let(viewModel::setRouter)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

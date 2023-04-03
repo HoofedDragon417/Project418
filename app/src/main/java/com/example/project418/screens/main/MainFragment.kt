@@ -1,6 +1,5 @@
 package com.example.project418.screens.main
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,10 @@ import com.example.project418.R
 import com.example.project418.adapters.pager.ViewPagerAdapter
 import com.example.project418.common.BaseFragment
 import com.example.project418.databinding.FragmentMainBinding
-import com.example.project418.screens.journal.JournalFragment
-import com.example.project418.screens.students.StudentsFragment
-import com.example.project418.screens.subjects.SubjectsFragment
-import com.example.project418.screens.teachers.TeachersFragment
+import com.example.project418.tabs.journal.JournalFragment
+import com.example.project418.tabs.students.StudentsFragment
+import com.example.project418.tabs.subjects.SubjectsFragment
+import com.example.project418.tabs.teachers.TeachersFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 //TODO: Почитать про insets
@@ -26,10 +25,6 @@ class MainFragment : BaseFragment() {
 
     private val viewModel: MainVM by viewModels()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        router?.let(viewModel::setRouter)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,7 +76,7 @@ class MainFragment : BaseFragment() {
         }
 
         binding.fabLogout.setOnClickListener {
-            viewModel.logout(requireContext())
+            viewModel.logout()
         }
     }
 }

@@ -19,5 +19,5 @@ object Screens {
     fun Camera() = FragmentScreen { CameraFragment() }
 
     fun CheckQr(content: String) =
-        FragmentScreen { CompleteRegistrationFragment(content) }
+        FragmentScreen { CompleteRegistrationFragment.newInstance(content) }
 }

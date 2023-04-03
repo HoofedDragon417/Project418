@@ -86,7 +86,7 @@ class DataBaseHelper(private val context: Context) :
 
         val selectQuery =
             "select $ID_FIELD, $LAST_NAME_FIELD, $FIRST_NAME_FIELD, $MIDDLE_NAME_FIELD" + " from $TEACHER_TABLE where $DEPARTMENT_ID_FIELD = ${
-                SharedPreference(context).getID()
+                UserConfig.getID()
             }"
         val cursor: Cursor = db.rawQuery(selectQuery, null)
 
@@ -145,7 +145,7 @@ class DataBaseHelper(private val context: Context) :
                     "(select $TITLE_FIELD from $TYPE_OF_WORK_TABLE where $ID_FIELD = $SUBJECT_TABLE.$SUBJECT_TYPE_OF_WORK_FIELD) as TOW, " +
                     "$SUBJECT_TYPE_OF_WORK_FIELD " +
                     "from $SUBJECT_TABLE " +
-                    "where $DEPARTMENT_ID_FIELD = ${SharedPreference(context).getID()}"
+                    "where $DEPARTMENT_ID_FIELD = ${UserConfig.getID()}"
         val cursor: Cursor = database.rawQuery(selectQuery, null)
 
         if (cursor.moveToFirst())
@@ -219,7 +219,9 @@ class DataBaseHelper(private val context: Context) :
         values.put(MAIN_STUDENTID_FIELD, student)
         values.put(MAIN_SUBJECTID_FIELD, subject)
         values.put(MAIN_TEACHERID_FIELD, teacher)
+        values.put(TITLE_FIELD, EMPTY_TITLE)
         values.put(MAIN_REGISTRATION_FIELD, registrationDate)
+        values.put(DEPARTMENT_ID_FIELD, UserConfig.getID())
 
         return database.insert(MAIN_TABLE, null, values)
     }
@@ -237,7 +239,7 @@ class DataBaseHelper(private val context: Context) :
         values.put(MAIN_TEACHERID_FIELD, teacher)
         values.put(TITLE_FIELD, titleOfWork)
         values.put(MAIN_REGISTRATION_FIELD, registrationDate)
-        values.put(DEPARTMENT_ID_FIELD, SharedPreference(context).getID())
+        values.put(DEPARTMENT_ID_FIELD, UserConfig.getID())
 
         return database.insert(MAIN_TABLE, null, values)
     }
@@ -253,7 +255,9 @@ class DataBaseHelper(private val context: Context) :
                     "as Student, " +
                     "(select $TITLE_FIELD from $SUBJECT_TABLE where $ID_FIELD = $MAIN_TABLE.$MAIN_SUBJECTID_FIELD) as Subject, " +
                     "(select $LAST_NAME_FIELD||' '||$FIRST_NAME_FIELD||' '||$MIDDLE_NAME_FIELD from $TEACHER_TABLE where $ID_FIELD =$MAIN_TABLE.$MAIN_TEACHERID_FIELD) as Teacher, " +
-                    "$MAIN_REGISTRATION_FIELD from $MAIN_TABLE where $DEPARTMENT_ID_FIELD = ${SharedPreference(context).getID()}"
+                    "$MAIN_REGISTRATION_FIELD from $MAIN_TABLE where $DEPARTMENT_ID_FIELD = ${
+                        UserConfig.getID()
+                    }"
 
         val cursor: Cursor = db.rawQuery(selectQuery, null)
 
@@ -307,5 +311,7 @@ class DataBaseHelper(private val context: Context) :
         private const val MAIN_SUBJECTID_FIELD = "Subject_ID"
         private const val MAIN_TEACHERID_FIELD = "Teacher_ID"
         private const val MAIN_REGISTRATION_FIELD = "Registration_Date"
+
+        private const val EMPTY_TITLE = "-"
     }
 }

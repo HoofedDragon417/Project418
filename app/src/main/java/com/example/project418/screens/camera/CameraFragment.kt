@@ -13,20 +13,18 @@ import androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.example.project418.common.AppGlobal
 import com.example.project418.common.BaseFragment
 import com.example.project418.common.Screens
 import com.example.project418.databinding.FragmentCameraBinding
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.fondesa.kpermissions.extension.send
-import java.util.concurrent.ExecutorService
 
 class CameraFragment : BaseFragment() {
 
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = requireNotNull(_binding)
-
-    private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +40,7 @@ class CameraFragment : BaseFragment() {
         permissionsBuilder(Manifest.permission.CAMERA).build().send { result ->
             if (result.allGranted()) {
                 startCamera()
-            } else router?.backTo(Screens.Main())
+            } else AppGlobal.AppRouter.backTo(Screens.Main())
         }
     }
 
@@ -68,7 +66,7 @@ class CameraFragment : BaseFragment() {
                 ContextCompat.getMainExecutor(requireContext()),
                 QrCodeAnalyzer { result ->
                     cameraProvider.unbindAll()
-                    router?.navigateTo(Screens.CheckQr(result))
+                    AppGlobal.AppRouter.navigateTo(Screens.CheckQr(result))
                 }
             )
 

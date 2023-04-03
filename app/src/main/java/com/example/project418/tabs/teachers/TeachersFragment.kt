@@ -1,4 +1,4 @@
-package com.example.project418.screens.subjects
+package com.example.project418.tabs.teachers
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,26 +7,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.project418.adapters.recycler.SubjectAdapter
+import com.example.project418.adapters.recycler.TeachersAdapter
 import com.example.project418.databinding.FragmentRecyclerBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-class SubjectsFragment : Fragment() {
+class TeachersFragment : Fragment() {
 
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: SubjectsVM by viewModels {
-        SubjectsVM.Factory(requireContext().applicationContext)
+    private val viewModel: TeachersVM by viewModels {
+        TeachersVM.Factory(requireContext().applicationContext)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.getSubjects(requireContext())
+        viewModel.getTeachers()
         _binding = FragmentRecyclerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,8 +35,8 @@ class SubjectsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch {
-            viewModel.listOfSubjects.onEach {
-                binding.recycler.adapter = SubjectAdapter(requireContext(), it)
+            viewModel.listOfTeachers.onEach {
+                binding.recycler.adapter = TeachersAdapter(requireContext(), it)
             }.collect()
         }
     }
