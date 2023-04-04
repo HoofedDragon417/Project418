@@ -138,6 +138,7 @@ class DataBaseHelper(private val context: Context) :
     }
 
     fun getListOfSubjects(): List<Subject> {
+        val db = database
         val returnList = mutableListOf<Subject>()
 
         val selectQuery =
@@ -146,7 +147,7 @@ class DataBaseHelper(private val context: Context) :
                     "$SUBJECT_TYPE_OF_WORK_FIELD " +
                     "from $SUBJECT_TABLE " +
                     "where $DEPARTMENT_ID_FIELD = ${UserConfig.getID()}"
-        val cursor: Cursor = database.rawQuery(selectQuery, null)
+        val cursor: Cursor = db.rawQuery(selectQuery, null)
 
         if (cursor.moveToFirst())
             do {
@@ -161,6 +162,7 @@ class DataBaseHelper(private val context: Context) :
             } while (cursor.moveToNext())
 
         cursor.close()
+        closeDb(db)
 
         return returnList
     }
@@ -176,6 +178,7 @@ class DataBaseHelper(private val context: Context) :
         val student = if (cursor.moveToFirst()) cursor.getString(0) else "Error"
 
         cursor.close()
+        closeDb(db)
 
         return student
     }
@@ -190,6 +193,7 @@ class DataBaseHelper(private val context: Context) :
         val subject = if (cursor.moveToFirst()) cursor.getString(0) else "Error"
 
         cursor.close()
+        closeDb(db)
 
         return subject
     }
@@ -205,6 +209,7 @@ class DataBaseHelper(private val context: Context) :
         val typeOfWork = if (cursor.moveToFirst()) cursor.getString(0) else "Error"
 
         cursor.close()
+        closeDb(db)
 
         return typeOfWork
     }

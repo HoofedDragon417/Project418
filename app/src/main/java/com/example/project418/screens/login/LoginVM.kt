@@ -1,7 +1,6 @@
 package com.example.project418.screens.login
 
 import androidx.lifecycle.viewModelScope
-import com.example.project418.R
 import com.example.project418.common.AppGlobal
 import com.example.project418.common.BaseVM
 import com.example.project418.common.Screens
@@ -10,11 +9,9 @@ import com.example.project418.storage.UserConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class LoginVM :
-    BaseVM() {
+class LoginVM : BaseVM() {
 
-    val loginError = MutableStateFlow<String?>(null)
-    val passwordError = MutableStateFlow<String?>(null)
+    val showAlertDialog = MutableStateFlow(false)
 
     fun authorization(user: Department) {
         viewModelScope.launch {
@@ -26,26 +23,13 @@ class LoginVM :
                     router.newRootScreen(Screens.Main())
                     return@launch
                 } else {
-                    loginError.value = AppGlobal.Instance.getString(R.string.login_error)
-                    passwordError.value = AppGlobal.Instance.getString(R.string.password_error)
+                    showAlertDialog.value = true
                 }
             }
         }
     }
 
-    private fun loginErrorNull() {
-        loginError.value = null
-    }
-
-    private fun passwordErrorNull() {
-        passwordError.value = null
-    }
-
-    fun onLoginChange() {
-        loginErrorNull()
-    }
-
-    fun onPasswordChange() {
-        passwordErrorNull()
+    fun dismissAlertDialog() {
+        showAlertDialog.value = false
     }
 }

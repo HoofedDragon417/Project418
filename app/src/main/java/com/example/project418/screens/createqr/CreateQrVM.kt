@@ -1,17 +1,15 @@
 package com.example.project418.screens.createqr
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.project418.R
+import com.example.project418.common.AppGlobal
 import com.example.project418.common.BaseVM
 import com.example.project418.models.Student
 import com.example.project418.models.Subject
-import com.example.project418.storage.DataBaseHelper
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,21 +17,23 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
-class CreateQrVM(private val context: Context, private val dataBaseHelper: DataBaseHelper) :
-    BaseVM() {
+class CreateQrVM : BaseVM() {
     private var listOfStudents = listOf<Student>()
     private var listOfSubjects = listOf<Subject>()
 
     val stringListOfStudents = MutableStateFlow(listOf<String>())
     val stringListOfSubjects = MutableStateFlow(listOf<String>())
 
+    val showStudentError = MutableStateFlow<String?>(null)
+    val showSubjectError = MutableStateFlow<String?>(null)
+
     private var studentPosition = -1
     private var subjectPosition = -1
 
     fun getLists() {
         viewModelScope.launch {
-            listOfStudents = dataBaseHelper.getListOfStudents()
-            listOfSubjects = dataBaseHelper.getListOfSubjects()
+            listOfStudents = AppGlobal.DataBaseHelper.getListOfStudents()
+            listOfSubjects = AppGlobal.DataBaseHelper.getListOfSubjects()
 
             val listStudents = mutableListOf<String>()
             val listSubjects = mutableListOf<String>()
@@ -69,8 +69,12 @@ class CreateQrVM(private val context: Context, private val dataBaseHelper: DataB
                 val qrBitmap = generateBitmap()
 
                 saveQr(qrBitmap)
-            } else
-                Log.e(TAG, "Empty values")
+            } else {
+                if (studentPosition == -1)
+                    showStudentError.value = AppGlobal.Instance.getString(R.string.choose_student)
+                if (subjectPosition == -1)
+                    showSubjectError.value = AppGlobal.Instance.getString(R.string.choose_subject)
+            }
         }
     }
 
@@ -106,16 +110,16 @@ class CreateQrVM(private val context: Context, private val dataBaseHelper: DataB
             e.printStackTrace()
 
             Toast.makeText(
-                context, "An error occurred while saving", Toast.LENGTH_SHORT
+                AppGlobal.Instance, "An error occurred while saving", Toast.LENGTH_SHORT
             ).show()
         } finally {
-            Toast.makeText(context, "QR code saved", Toast.LENGTH_SHORT).show()
+            Toast.makeText(AppGlobal.Instance, "QR code saved", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun getOutMediaPath(): File {
         val pathName =
-            "${context.getExternalFilesDir(DIRECTORY_QR_CODES)}/${stringListOfStudents.value[studentPosition]}"
+            "${AppGlobal.Instance.getExternalFilesDir(DIRECTORY_QR_CODES)}/${stringListOfStudents.value[studentPosition]}"
         val mediaStorage = File(pathName)
 
         if (!mediaStorage.exists()) {
@@ -129,21 +133,17 @@ class CreateQrVM(private val context: Context, private val dataBaseHelper: DataB
         return mediaStorage
     }
 
+    fun cleanStudentError() {
+        showStudentError.value = null
+    }
+
+    fun cleanSubjectError() {
+        showSubjectError.value = null
+    }
+
     companion object {
         private const val QR_CODE_QUALITY = 256
 
         private const val DIRECTORY_QR_CODES = "QRCodes"
-
-        private const val TAG = "QR generator"
-
-        fun Factory(context: Context): ViewModelProvider.Factory {
-            return object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    val db = DataBaseHelper(context)
-                    return CreateQrVM(context, db) as T
-                }
-            }
-        }
-
     }
 }

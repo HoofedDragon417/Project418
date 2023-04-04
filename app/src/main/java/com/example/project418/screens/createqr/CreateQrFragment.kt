@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.project418.R
 import com.example.project418.common.BaseFragment
 import com.example.project418.databinding.FragmentCreateQrBinding
@@ -20,7 +22,7 @@ class CreateQrFragment : BaseFragment() {
     private var _binding: FragmentCreateQrBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: CreateQrVM by viewModels { CreateQrVM.Factory(requireContext().applicationContext) }
+    private val viewModel: CreateQrVM by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,32 +36,61 @@ class CreateQrFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launch {
-            viewModel.stringListOfStudents.onEach {
-                val adapter = ArrayAdapter(requireContext(), R.layout.dropmenu_item, it)
+        subscription()
 
-                binding.etStudent.setAdapter(adapter)
-            }.collect()
-        }
-
-        lifecycleScope.launch {
-            viewModel.stringListOfSubjects.onEach {
-                val adapter = ArrayAdapter(requireContext(), R.layout.dropmenu_item, it)
-
-                binding.etSubject.setAdapter(adapter)
-            }.collect()
+        binding.subjectContainer.setOnClickListener {
+            viewModel.cleanSubjectError()
         }
 
         binding.etStudent.doAfterTextChanged { s ->
+            viewModel.cleanStudentError()
             viewModel.getStudentIndex(s.toString())
         }
 
         binding.etSubject.doAfterTextChanged { s ->
+            viewModel.cleanSubjectError()
             viewModel.getSubjectIndex(s.toString())
         }
 
         binding.btnGenerateQr.setOnClickListener {
             viewModel.generateQr()
+        }
+    }
+
+    private fun subscription() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stringListOfSubjects.onEach {
+                    val adapter = ArrayAdapter(requireContext(), R.layout.dropmenu_item, it)
+
+                    binding.etSubject.setAdapter(adapter)
+                }.collect()
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stringListOfStudents.onEach {
+                    val adapter = ArrayAdapter(requireContext(), R.layout.dropmenu_item, it)
+
+                    binding.etStudent.setAdapter(adapter)
+                }.collect()
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.showStudentError.onEach {
+                    binding.studentContainer.error = it
+                }.collect()
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.showSubjectError.onEach {
+                    binding.subjectContainer.error = it
+                }.collect()
+            }
         }
     }
 }
