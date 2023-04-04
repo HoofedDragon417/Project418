@@ -25,11 +25,7 @@ class CompleteRegistrationFragment : BaseFragment() {
     private var _binding: FragmentCompleteRegistrationBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: CompleteRegistrationVM by viewModels {
-        CompleteRegistrationVM.Factory(
-            requireContext().applicationContext
-        )
-    }
+    private val viewModel: CompleteRegistrationVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

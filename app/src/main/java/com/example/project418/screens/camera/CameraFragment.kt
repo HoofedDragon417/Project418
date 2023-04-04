@@ -13,6 +13,8 @@ import androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import com.example.project418.R
 import com.example.project418.common.AppGlobal
 import com.example.project418.common.BaseFragment
 import com.example.project418.common.Screens
@@ -20,11 +22,14 @@ import com.example.project418.databinding.FragmentCameraBinding
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.fondesa.kpermissions.extension.send
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class CameraFragment : BaseFragment() {
 
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = requireNotNull(_binding)
+
+    private val viewModel: CameraVM by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,20 +71,34 @@ class CameraFragment : BaseFragment() {
                 ContextCompat.getMainExecutor(requireContext()),
                 QrCodeAnalyzer { result ->
                     cameraProvider.unbindAll()
-                    AppGlobal.AppRouter.navigateTo(Screens.CheckQr(result))
+                    if (!viewModel.checkContent(result)) {
+                        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(AppGlobal.Instance.getString(R.string.qr_error_title))
+                            .setMessage(AppGlobal.Instance.getString(R.string.qr_error_message))
+                            .setPositiveButton("OK") { dialog, which ->
+                                dialog.dismiss()
+                                cameraProvider.bindToLifecycle(
+                                    viewLifecycleOwner, cameraSelector,
+                                    previewMain, imageAnalysis
+                                )
+                            }
+                        alertDialog.create()
+                        alertDialog.show()
+                    }
                 }
             )
 
             try {
                 cameraProvider.bindToLifecycle(
-                    requireActivity(), cameraSelector,
+                    viewLifecycleOwner, cameraSelector,
                     previewMain, imageAnalysis
                 )
-            } catch (e: java.lang.Exception) {
+            } catch (e: Exception) {
                 Log.e(TAG, "Use case binding failed", e)
             }
         }, ContextCompat.getMainExecutor(requireContext()))
     }
+
 
     companion object {
         private const val TAG = "CameraXApp"

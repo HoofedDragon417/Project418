@@ -1,19 +1,14 @@
 <resources>
-    <string name="app_name">Project418</string>
+    <string name="app_name" translatable="false">Project418</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="department">Department</string>
     <string name="password">Password</string>
 
     <string name="login">Login</string>
-    <string name="logout">Logout</string>
 
-    <string name="login_error">Check your login</string>
-    <string name="password_error">Check your password</string>
-
-    <string name="student_fragment">Student fragment</string>
-    <string name="subject_fragment">Subject fragment</string>
-    <string name="teachers_fragment">Teachers fragment</string>
+    <string name="login_error_title">Authorization failed</string>
+    <string name="login_error_message">Something has gone wrong. Check your authorization data.</string>
 
     <string name="student_title">Student</string>
     <string name="subject_title">Subject</string>
@@ -21,25 +16,35 @@
     <string name="type_of_work_title">Type of work</string>
     <string name="journal_title">Journal</string>
 
-    <string name="fio">%s %s %s</string>
+    <string name="fio" translatable="false">%s %s %s</string>
 
     <string name="student_group">Group %s</string>
     <string name="student_course">Course %d</string>
 
-    <string name="subject">%s</string>
+    <string name="subject" translatable="false">%s</string>
     <string name="type_of_work">Type of work: %s</string>
-    <string name="show_more_buttons">Show more buttons</string>
-    <string name="generate_qr">Generate QR</string>
+    <string name="show_more_buttons" translatable="false">Show more buttons</string>
+    <string name="generate_qr">Generate QR-code</string>
     <string name="complete_registration">Complete registration</string>
     <string name="confirm">Confirm</string>
     <string name="title_of_work">Title of work</string>
-    <string name="create_qr_for_student">Create QR for student</string>
+    <string name="create_qr_for_student">Create QR-code for student</string>
 
     <string name="title_recycler">Title: %s</string>
     <string name="student_recycler">Student: %s</string>
     <string name="subject_recycler">Subject: %s</string>
     <string name="teacher_recycler">Teacher: %s</string>
-    <string name="registration_pattern">dd/MM/yyyy HH:mm</string>
+    <string name="registration_pattern" translatable="false">dd/MM/yyyy HH:mm</string>
     <string name="registration_date">Registration date: %s</string>
     <string name="authorization">Authorization</string>
+
+    <string name="qr_error_title">Wrong QR-code</string>
+    <string name="qr_error_message">You scan wrong QR-code</string>
+
+    <string name="qr_create_error">Select values</string>
+
+    <string name="choose_teacher">Choose teacher</string>
+
+    <string name="choose_student">Choose student</string>
+    <string name="choose_subject">Choose subject</string>
 </resources>
