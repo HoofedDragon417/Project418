@@ -5,6 +5,7 @@ data class Journal(
     val title: String,
     val student: String,
     val subject: String,
+    val typeOfWork: String,
     val teacher: String,
     val registrationData: Long
 )

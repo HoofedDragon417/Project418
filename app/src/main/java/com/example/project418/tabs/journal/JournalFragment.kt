@@ -17,7 +17,7 @@ class JournalFragment : Fragment() {
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: JournalVM by viewModels { JournalVM.Factory(requireContext().applicationContext) }
+    private val viewModel: JournalVM by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

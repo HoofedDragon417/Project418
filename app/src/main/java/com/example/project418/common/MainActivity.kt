@@ -4,25 +4,23 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.project418.R
 import com.example.project418.storage.UserConfig
-import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
+    private val navigator = object : AppNavigator(this, R.id.root_fragment_container) {}
 
-    private val cicerone = Cicerone.create()
-    private val navigatorHolder get() = cicerone.getNavigatorHolder()
-    private val navigator = AppNavigator(this, R.id.root_fragment_container)
-
-    init {
-        AppGlobal.attachRouter(cicerone.router)
-    }
+    private val navigatorHolder: NavigatorHolder by inject()
+    private val router: Router by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (UserConfig.getID() == -1)
-            AppGlobal.AppRouter.newRootScreen(Screens.Login())
-        else AppGlobal.AppRouter.newRootScreen(Screens.Main())
+            router.newRootScreen(Screens.Login())
+        else router.newRootScreen(Screens.Main())
     }
 
     override fun onResumeFragments() {

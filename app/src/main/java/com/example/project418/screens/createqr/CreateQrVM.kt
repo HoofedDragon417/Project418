@@ -4,12 +4,13 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project418.R
 import com.example.project418.common.AppGlobal
-import com.example.project418.common.BaseVM
 import com.example.project418.models.Student
 import com.example.project418.models.Subject
+import com.example.project418.storage.UserConfig
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
-class CreateQrVM : BaseVM() {
+class CreateQrVM : ViewModel() {
     private var listOfStudents = listOf<Student>()
     private var listOfSubjects = listOf<Subject>()
 
@@ -82,7 +83,7 @@ class CreateQrVM : BaseVM() {
         val qrWriter = QRCodeWriter()
         val qrSize = QR_CODE_QUALITY
         val content =
-            "${listOfStudents[studentPosition].id},${listOfSubjects[subjectPosition].id}," + "${listOfSubjects[subjectPosition].typeOfWorkID}"
+            "${listOfStudents[studentPosition].id},${listOfSubjects[subjectPosition].id},${listOfSubjects[subjectPosition].typeOfWorkID};${UserConfig.getID()}"
         val bitMatrix = qrWriter.encode(content, BarcodeFormat.QR_CODE, qrSize, qrSize)
         val bitmap = Bitmap.createBitmap(qrSize, qrSize, Bitmap.Config.RGB_565)
 

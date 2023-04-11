@@ -5,7 +5,7 @@
     <string name="department">Department</string>
     <string name="password">Password</string>
 
-    <string name="login">Login</string>
+    <string name="login">Log in</string>
 
     <string name="login_error_title">Authorization failed</string>
     <string name="login_error_message">Something has gone wrong. Check your authorization data.</string>
@@ -33,6 +33,7 @@
     <string name="title_recycler">Title: %s</string>
     <string name="student_recycler">Student: %s</string>
     <string name="subject_recycler">Subject: %s</string>
+    <string name="type_of_work_recycler">Type of work: %s</string>
     <string name="teacher_recycler">Teacher: %s</string>
     <string name="registration_pattern" translatable="false">dd/MM/yyyy HH:mm</string>
     <string name="registration_date">Registration date: %s</string>
@@ -47,4 +48,7 @@
 
     <string name="choose_student">Choose student</string>
     <string name="choose_subject">Choose subject</string>
+
+    <string name="insert_error_title">Something has gone wrong.</string>
+    <string name="insert_error_message">Can\'t register in journal. Try again.</string>
 </resources>

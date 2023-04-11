@@ -3,7 +3,7 @@
     <string name="app_name">Project418</string>
     <string name="department">Кафедра</string>
     <string name="password">Пароль</string>
-    <string name="login">Логин</string>
+    <string name="login">Войти</string>
     <string name="login_error_title">Авторизация провалилась</string>
     <string name="login_error_message">Что-то пошло не так. Проверьте данные для авторизации.</string>
     <string name="student_title">Студент</string>
@@ -22,6 +22,7 @@
     <string name="title_recycler">Название: %s</string>
     <string name="student_recycler">Студент: %s</string>
     <string name="subject_recycler">Предмет: %s</string>
+    <string name="type_of_work_recycler">Тип работы: %s</string>
     <string name="teacher_recycler">Преподаватель: %s</string>
     <string name="registration_date">Дата регистрации: %s</string>
     <string name="authorization">Авторизация</string>
@@ -31,4 +32,6 @@
     <string name="choose_teacher">Выберите преподавателя</string>
     <string name="choose_student">Выберите студента</string>
     <string name="choose_subject">Выберите предмет</string>
+    <string name="insert_error_title">Что-то пошло не так.</string>
+    <string name="insert_error_message">Не могу зарегистрировать в журнале. Попробуйте снова.</string>
 </resources>

@@ -1,35 +1,41 @@
 package com.example.project418.screens.login
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project418.common.AppGlobal
-import com.example.project418.common.BaseVM
 import com.example.project418.common.Screens
 import com.example.project418.models.Department
 import com.example.project418.storage.UserConfig
+import com.github.terrakok.cicerone.Router
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class LoginVM : BaseVM() {
+class LoginVMImpl(private val router: Router) : ViewModel(), LoginVM {
 
     val showAlertDialog = MutableStateFlow(false)
 
-    fun authorization(user: Department) {
+    override fun authorization(user: Department) {
         viewModelScope.launch {
-            val listOfDepartments = AppGlobal.DataBaseHelper.getListOfDepartments()
+            val departmentID = AppGlobal.DataBaseHelper.singIn(user)
 
-            for (department in listOfDepartments) {
-                if (user.login == department.login && user.password == department.password) {
-                    UserConfig.saveID(department.id)
-                    router.newRootScreen(Screens.Main())
-                    return@launch
-                } else {
-                    showAlertDialog.value = true
-                }
-            }
+            if (departmentID != FALSE_USER) {
+                UserConfig.saveID(departmentID)
+                router.navigateTo(Screens.Main())
+            } else showAlertDialog.value = true
         }
     }
 
-    fun dismissAlertDialog() {
+    override fun dismissAlertDialog() {
         showAlertDialog.value = false
     }
+
+    companion object {
+        private const val FALSE_USER = -1
+    }
+}
+
+interface LoginVM {
+    fun authorization(user: Department)
+    fun dismissAlertDialog()
 }

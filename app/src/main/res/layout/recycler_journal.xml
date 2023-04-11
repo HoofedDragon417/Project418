@@ -33,6 +33,13 @@
             tools:hint="@string/subject_recycler" />
 
         <TextView
+            android:id="@+id/tv_type_of_work"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            tools:hint="@string/type_of_work_recycler" />
+
+        <TextView
             android:id="@+id/tv_teacher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.project418.models.*
+import org.koin.dsl.module
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -57,7 +58,7 @@ class DataBaseHelper(private val context: Context) :
     private fun closeDb(db: SQLiteDatabase) = db.close()
 
     fun getListOfDepartments(): List<Department> {
-        val db = open()
+        val db = database
 
         val returnList = mutableListOf<Department>()
 
@@ -74,13 +75,11 @@ class DataBaseHelper(private val context: Context) :
 
         cursor.close()
 
-        closeDb(db)
-
         return returnList
     }
 
     fun getListOfTeachers(): List<Teachers> {
-        val db = open()
+        val db = database
 
         val returnList = mutableListOf<Teachers>()
 
@@ -102,13 +101,12 @@ class DataBaseHelper(private val context: Context) :
         } while (cursor.moveToNext())
 
         cursor.close()
-        closeDb(db)
 
         return returnList
     }
 
     fun getListOfStudents(): List<Student> {
-        val db = open()
+        val db = database
 
         val returnList = mutableListOf<Student>()
 
@@ -132,7 +130,6 @@ class DataBaseHelper(private val context: Context) :
         } while (cursor.moveToNext())
 
         cursor.close()
-        closeDb(db)
 
         return returnList
     }
@@ -162,13 +159,12 @@ class DataBaseHelper(private val context: Context) :
             } while (cursor.moveToNext())
 
         cursor.close()
-        closeDb(db)
 
         return returnList
     }
 
     fun getStudent(studentID: Int): String {
-        val db = open()
+        val db = database
 
         val selectQuery =
             "select ($LAST_NAME_FIELD||' '||$FIRST_NAME_FIELD||' '||$MIDDLE_NAME_FIELD) as FIO " +
@@ -178,13 +174,12 @@ class DataBaseHelper(private val context: Context) :
         val student = if (cursor.moveToFirst()) cursor.getString(0) else "Error"
 
         cursor.close()
-        closeDb(db)
 
         return student
     }
 
     fun getSubject(subjectID: Int): String {
-        val db = open()
+        val db = database
 
         val selectQuery = "select $TITLE_FIELD from $SUBJECT_TABLE where $ID_FIELD = $subjectID"
 
@@ -193,13 +188,12 @@ class DataBaseHelper(private val context: Context) :
         val subject = if (cursor.moveToFirst()) cursor.getString(0) else "Error"
 
         cursor.close()
-        closeDb(db)
 
         return subject
     }
 
     fun getTypeOfWork(typeOfWorkID: Int): String {
-        val db = open()
+        val db = database
 
         val selectQuery =
             "select $TITLE_FIELD from $TYPE_OF_WORK_TABLE where $ID_FIELD = $typeOfWorkID"
@@ -209,7 +203,6 @@ class DataBaseHelper(private val context: Context) :
         val typeOfWork = if (cursor.moveToFirst()) cursor.getString(0) else "Error"
 
         cursor.close()
-        closeDb(db)
 
         return typeOfWork
     }
@@ -221,9 +214,9 @@ class DataBaseHelper(private val context: Context) :
         registrationDate: Long
     ): Long {
         val values = ContentValues()
-        values.put(MAIN_STUDENTID_FIELD, student)
-        values.put(MAIN_SUBJECTID_FIELD, subject)
-        values.put(MAIN_TEACHERID_FIELD, teacher)
+        values.put(MAIN_STUDENT_ID_FIELD, student)
+        values.put(MAIN_SUBJECT_ID_FIELD, subject)
+        values.put(MAIN_TEACHER_ID_FIELD, teacher)
         values.put(TITLE_FIELD, EMPTY_TITLE)
         values.put(MAIN_REGISTRATION_FIELD, registrationDate)
         values.put(DEPARTMENT_ID_FIELD, UserConfig.getID())
@@ -239,9 +232,9 @@ class DataBaseHelper(private val context: Context) :
         registrationDate: Long
     ): Long {
         val values = ContentValues()
-        values.put(MAIN_STUDENTID_FIELD, student)
-        values.put(MAIN_SUBJECTID_FIELD, subject)
-        values.put(MAIN_TEACHERID_FIELD, teacher)
+        values.put(MAIN_STUDENT_ID_FIELD, student)
+        values.put(MAIN_SUBJECT_ID_FIELD, subject)
+        values.put(MAIN_TEACHER_ID_FIELD, teacher)
         values.put(TITLE_FIELD, titleOfWork)
         values.put(MAIN_REGISTRATION_FIELD, registrationDate)
         values.put(DEPARTMENT_ID_FIELD, UserConfig.getID())
@@ -250,16 +243,17 @@ class DataBaseHelper(private val context: Context) :
     }
 
     fun getJournal(): List<Journal> {
-        val db = open()
+        val db = database
 
         val returnList = mutableListOf<Journal>()
 
         val selectQuery =
             "select $ID_FIELD, $TITLE_FIELD, " +
-                    "(select $LAST_NAME_FIELD||' '||$FIRST_NAME_FIELD||' '||$MIDDLE_NAME_FIELD from $STUDENT_TABLE where $ID_FIELD = $MAIN_TABLE.$MAIN_STUDENTID_FIELD) " +
+                    "(select $LAST_NAME_FIELD||' '||$FIRST_NAME_FIELD||' '||$MIDDLE_NAME_FIELD from $STUDENT_TABLE where $ID_FIELD = $MAIN_TABLE.$MAIN_STUDENT_ID_FIELD) " +
                     "as Student, " +
-                    "(select $TITLE_FIELD from $SUBJECT_TABLE where $ID_FIELD = $MAIN_TABLE.$MAIN_SUBJECTID_FIELD) as Subject, " +
-                    "(select $LAST_NAME_FIELD||' '||$FIRST_NAME_FIELD||' '||$MIDDLE_NAME_FIELD from $TEACHER_TABLE where $ID_FIELD =$MAIN_TABLE.$MAIN_TEACHERID_FIELD) as Teacher, " +
+                    "(select $TITLE_FIELD from $SUBJECT_TABLE where $ID_FIELD = $MAIN_TABLE.$MAIN_SUBJECT_ID_FIELD) as Subject, " +
+                    "(select $TITLE_FIELD from $TYPE_OF_WORK_TABLE where $ID_FIELD = (select $SUBJECT_TYPE_OF_WORK_FIELD from $SUBJECT_TABLE where $ID_FIELD = $MAIN_TABLE.$MAIN_SUBJECT_ID_FIELD)) as TypeOfWork, " +
+                    "(select $LAST_NAME_FIELD||' '||$FIRST_NAME_FIELD||' '||$MIDDLE_NAME_FIELD from $TEACHER_TABLE where $ID_FIELD =$MAIN_TABLE.$MAIN_TEACHER_ID_FIELD) as Teacher, " +
                     "$MAIN_REGISTRATION_FIELD from $MAIN_TABLE where $DEPARTMENT_ID_FIELD = ${
                         UserConfig.getID()
                     }"
@@ -274,16 +268,32 @@ class DataBaseHelper(private val context: Context) :
                         title = cursor.getString(1),
                         student = cursor.getString(2),
                         subject = cursor.getString(3),
-                        teacher = cursor.getString(4),
-                        registrationData = cursor.getLong(5)
+                        typeOfWork = cursor.getString(4),
+                        teacher = cursor.getString(5),
+                        registrationData = cursor.getLong(6)
                     )
                 )
             } while (cursor.moveToNext())
 
         cursor.close()
-        closeDb(db)
 
         return returnList
+    }
+
+    fun singIn(user: Department): Int {
+        val db = database
+
+
+        val selectQuery =
+            "select $ID_FIELD from $DEPARTMENT_TABLE where $LOGIN = '${user.login}' and $PASSWORD = '${user.password}'"
+
+        val cursor: Cursor = db.rawQuery(selectQuery, null)
+
+        val departmentID = if (cursor.moveToFirst()) cursor.getInt(0) else FALSE_USER
+
+        cursor.close()
+
+        return departmentID
     }
 
     companion object {
@@ -312,11 +322,20 @@ class DataBaseHelper(private val context: Context) :
         private const val SUBJECT_TYPE_OF_WORK_FIELD = "Type_Of_Work_ID"
         private const val DEPARTMENT_ID_FIELD = "Department_ID"
 
-        private const val MAIN_STUDENTID_FIELD = "Student_ID"
-        private const val MAIN_SUBJECTID_FIELD = "Subject_ID"
-        private const val MAIN_TEACHERID_FIELD = "Teacher_ID"
+        private const val MAIN_STUDENT_ID_FIELD = "Student_ID"
+        private const val MAIN_SUBJECT_ID_FIELD = "Subject_ID"
+        private const val MAIN_TEACHER_ID_FIELD = "Teacher_ID"
         private const val MAIN_REGISTRATION_FIELD = "Registration_Date"
 
+        private const val LOGIN = "Login"
+        private const val PASSWORD = "Password"
+
         private const val EMPTY_TITLE = "-"
+
+        private const val FALSE_USER = -1
     }
+}
+
+val databaseModule = module {
+    single { DataBaseHelper(get()) }
 }

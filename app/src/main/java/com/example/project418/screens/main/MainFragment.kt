@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import com.example.project418.R
 import com.example.project418.adapters.pager.ViewPagerAdapter
 import com.example.project418.common.BaseFragment
@@ -15,6 +14,7 @@ import com.example.project418.tabs.students.StudentsFragment
 import com.example.project418.tabs.subjects.SubjectsFragment
 import com.example.project418.tabs.teachers.TeachersFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 //TODO: Почитать про insets
 
@@ -23,8 +23,7 @@ class MainFragment : BaseFragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: MainVM by viewModels()
-
+    private val viewModel: MainVMImpl by activityViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

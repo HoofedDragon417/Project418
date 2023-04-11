@@ -13,7 +13,6 @@ import androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
 import com.example.project418.R
 import com.example.project418.common.AppGlobal
 import com.example.project418.common.BaseFragment
@@ -22,14 +21,19 @@ import com.example.project418.databinding.FragmentCameraBinding
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.fondesa.kpermissions.extension.send
+import com.github.terrakok.cicerone.Router
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class CameraFragment : BaseFragment() {
 
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: CameraVM by viewModels()
+    private val viewModel: CameraVMImpl by activityViewModel()
+
+    private val router: Router by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +49,7 @@ class CameraFragment : BaseFragment() {
         permissionsBuilder(Manifest.permission.CAMERA).build().send { result ->
             if (result.allGranted()) {
                 startCamera()
-            } else AppGlobal.AppRouter.backTo(Screens.Main())
+            } else router.backTo(Screens.Main())
         }
     }
 
@@ -71,7 +75,7 @@ class CameraFragment : BaseFragment() {
                 ContextCompat.getMainExecutor(requireContext()),
                 QrCodeAnalyzer { result ->
                     cameraProvider.unbindAll()
-                    if (!viewModel.checkContent(result)) {
+                    if (viewModel.checkContent(result)) {
                         val alertDialog = MaterialAlertDialogBuilder(requireContext())
                             .setTitle(AppGlobal.Instance.getString(R.string.qr_error_title))
                             .setMessage(AppGlobal.Instance.getString(R.string.qr_error_message))

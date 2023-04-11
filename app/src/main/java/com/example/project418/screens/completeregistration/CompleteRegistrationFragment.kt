@@ -8,15 +8,13 @@ import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.project418.R
 import com.example.project418.common.BaseFragment
 import com.example.project418.databinding.FragmentCompleteRegistrationBinding
-import kotlinx.coroutines.flow.collect
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 private const val QR_CONTENT = "qr_content"
 
@@ -58,59 +56,49 @@ class CompleteRegistrationFragment : BaseFragment() {
             val title = binding.etTitleOfWork.text.toString()
             viewModel.registrationWork(title)
         }
+
+        View.OnClickListener {
+            binding.etTeacher.isFocusable = false
+            binding.etTitleOfWork.isFocusable = false
+        }
     }
 
     private fun subscription() {
+        viewModel.student.onEach { student ->
+            binding.tvStudent.setText(student)
+        }.launchIn(lifecycleScope)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.student.onEach {
-                    binding.tvStudent.setText(it)
-                }.collect()
-            }
-        }
+        viewModel.subject.onEach { subject ->
+            binding.tvSubject.setText(subject)
+        }.launchIn(lifecycleScope)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.subject.onEach {
-                    binding.tvSubject.setText(it)
-                }.collect()
-            }
-        }
+        viewModel.typeOfWork.onEach { typeOfWork ->
+            binding.tvTypeOfWork.setText(typeOfWork)
+        }.launchIn(lifecycleScope)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.typeOfWork.onEach {
-                    binding.tvTypeOfWork.setText(it)
-                }.collect()
-            }
-        }
+        viewModel.stringListOfTeachers.onEach { list ->
+            val adapter = ArrayAdapter(requireContext(), R.layout.dropmenu_item, list)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stringListOfTeachers.onEach {
-                    val adapter = ArrayAdapter(requireContext(), R.layout.dropmenu_item, it)
+            binding.etTeacher.setAdapter(adapter)
+        }.launchIn(lifecycleScope)
 
-                    binding.etTeacher.setAdapter(adapter)
-                }.collect()
-            }
-        }
+        viewModel.errorTeacherMessage.onEach { message ->
+            binding.teacherContainer.error = message
+        }.launchIn(lifecycleScope)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.errorMessage.onEach {
-                    binding.teacherContainer.error = it
-                }.collect()
-            }
-        }
+        viewModel.errorInsertMessage.onEach { showError ->
+            if (showError)
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.qr_error_title)
+                    .setMessage(R.string.insert_error_message)
+                    .setPositiveButton("OK") { dialog, which ->
+                        dialog.dismiss()
+                    }.create().show()
+        }.launchIn(lifecycleScope)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.titleEnable.onEach {
-                    binding.titleContainer.isEnabled = it
-                }.collect()
-            }
-        }
+        viewModel.titleEnable.onEach { enable ->
+            binding.titleContainer.isEnabled = enable
+        }.launchIn(lifecycleScope)
     }
 
     companion object {

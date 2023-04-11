@@ -1,15 +1,15 @@
 package com.example.project418.screens.completeregistration
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project418.R
 import com.example.project418.common.AppGlobal
-import com.example.project418.common.BaseVM
 import com.example.project418.models.Teachers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 
-class CompleteRegistrationVM : BaseVM() {
+class CompleteRegistrationVM : ViewModel() {
     val student = MutableStateFlow("")
     val subject = MutableStateFlow("")
     val typeOfWork = MutableStateFlow("")
@@ -24,7 +24,8 @@ class CompleteRegistrationVM : BaseVM() {
     private var subjectID = -1
 
 
-    val errorMessage = MutableStateFlow<String?>(null)
+    val errorTeacherMessage = MutableStateFlow<String?>(null)
+    val errorInsertMessage = MutableStateFlow(false)
 
     fun getQrContent(qrContent: String) {
         viewModelScope.launch {
@@ -56,34 +57,34 @@ class CompleteRegistrationVM : BaseVM() {
     }
 
     fun registrationWork(titleOfWork: String) {
-        viewModelScope.launch {
-            if (teacherPosition == -1)
-                errorMessage.value = AppGlobal.Instance.getString(R.string.choose_teacher)
-            else {
-                val registrationDate = Calendar.getInstance().timeInMillis
-                if (titleOfWork.isEmpty()) {
-                    AppGlobal.DataBaseHelper.registerTest(
-                        studentID,
-                        subjectID,
-                        listOfTeachers[teacherPosition].id,
-                        registrationDate
-                    )
-                } else {
-                    AppGlobal.DataBaseHelper.registerCourseWork(
-                        studentID,
-                        subjectID,
-                        listOfTeachers[teacherPosition].id,
-                        titleOfWork,
-                        registrationDate
-                    )
-                }
+        if (teacherPosition == -1)
+            errorTeacherMessage.value = AppGlobal.Instance.getString(R.string.choose_teacher)
+        else {
+            val registrationDate = Calendar.getInstance().timeInMillis
+            if (titleOfWork.isEmpty()) {
+                val result = AppGlobal.DataBaseHelper.registerTest(
+                    studentID,
+                    subjectID,
+                    listOfTeachers[teacherPosition].id,
+                    registrationDate
+                )
+                if (result == -1L) errorInsertMessage.value = true
+            } else {
+                val result = AppGlobal.DataBaseHelper.registerCourseWork(
+                    studentID,
+                    subjectID,
+                    listOfTeachers[teacherPosition].id,
+                    titleOfWork,
+                    registrationDate
+                )
+                if (result == -1L) errorInsertMessage.value = true
             }
         }
     }
 
     fun errorNull() {
         viewModelScope.launch {
-            errorMessage.value = null
+            errorTeacherMessage.value = null
         }
     }
 }

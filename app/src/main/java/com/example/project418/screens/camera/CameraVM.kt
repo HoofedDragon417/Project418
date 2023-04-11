@@ -1,24 +1,26 @@
 package com.example.project418.screens.camera
 
 import androidx.lifecycle.ViewModel
-import com.example.project418.R
-import com.example.project418.common.AppGlobal
 import com.example.project418.common.Screens
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.example.project418.storage.UserConfig
+import com.github.terrakok.cicerone.Router
 
-class CameraVM : ViewModel() {
-    fun checkContent(result: String): Boolean {
-        return if (result[result.lastIndex] == ',') {
-            false
-        } else {
-            val checkList = result.split(",").map { it.toInt() }
+class CameraVMImpl(private val router: Router) : ViewModel(), CameraVM {
+    override fun checkContent(result: String): Boolean {
+        val qrContentTemplate = Regex("\\d+,\\d+,\\d;\\d+")
 
-            if (checkList.lastIndex == 2) {
-                AppGlobal.AppRouter.navigateTo(Screens.CheckQr(result))
-                true
-            } else {
+        return if (result.matches(qrContentTemplate)) {
+            val (qrData, departmentID) = result.split(";")
+            if (departmentID.toInt() == UserConfig.getID()) {
+                router.navigateTo(Screens.CheckQr(qrData))
                 false
-            }
+            } else true
+        } else {
+            true
         }
     }
+}
+
+interface CameraVM {
+    fun checkContent(result: String): Boolean
 }
