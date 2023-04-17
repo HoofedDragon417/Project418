@@ -1,4 +1,4 @@
-package com.example.project418.tabs.teachers
+package com.example.project418.screens.tabs.teachers
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -15,17 +15,6 @@ class TeachersVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
     fun getTeachers() {
         viewModelScope.launch {
             listOfTeachers.value = dataBaseHelper.getListOfTeachers()
-        }
-    }
-
-    companion object {
-        fun Factory(context: Context): ViewModelProvider.Factory {
-            return object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    val db = DataBaseHelper(context)
-                    return TeachersVM(db) as T
-                }
-            }
         }
     }
 }

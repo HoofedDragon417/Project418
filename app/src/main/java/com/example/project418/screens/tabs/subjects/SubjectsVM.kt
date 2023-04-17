@@ -1,22 +1,20 @@
-package com.example.project418.tabs.journal
+package com.example.project418.screens.tabs.subjects
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.project418.common.AppGlobal
-import com.example.project418.models.Journal
+import com.example.project418.models.Subject
 import com.example.project418.storage.DataBaseHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class JournalVM : ViewModel() {
+class SubjectsVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
+    val listOfSubjects = MutableStateFlow(listOf<Subject>())
 
-    val recordsInJournal = MutableStateFlow(listOf<Journal>())
-
-    fun getJournal() {
+    fun getSubjects() {
         viewModelScope.launch {
-            recordsInJournal.value = AppGlobal.DataBaseHelper.getJournal()
+            listOfSubjects.value = dataBaseHelper.getListOfSubjects()
         }
     }
 }

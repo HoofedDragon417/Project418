@@ -30,7 +30,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures{
+    buildFeatures {
         viewBinding true
     }
 }
@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.github.terrakok:cicerone:7.1'
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1"
 
     implementation "androidx.fragment:fragment-ktx:1.5.6"
 

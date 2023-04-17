@@ -5,11 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.project418.R
 import com.example.project418.common.AppGlobal
 import com.example.project418.models.Teachers
+import com.example.project418.storage.DataBaseHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 
-class CompleteRegistrationVM : ViewModel() {
+class CompleteRegistrationVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
     val student = MutableStateFlow("")
     val subject = MutableStateFlow("")
     val typeOfWork = MutableStateFlow("")
@@ -34,15 +35,15 @@ class CompleteRegistrationVM : ViewModel() {
             this@CompleteRegistrationVM.studentID = studentID
             this@CompleteRegistrationVM.subjectID = subjectID
 
-            student.value = AppGlobal.DataBaseHelper.getStudent(studentID)
-            subject.value = AppGlobal.DataBaseHelper.getSubject(subjectID)
-            typeOfWork.value = AppGlobal.DataBaseHelper.getTypeOfWork(typeOfWorkID)
+            student.value = dataBaseHelper.getStudent(studentID)
+            subject.value = dataBaseHelper.getSubject(subjectID)
+            typeOfWork.value = dataBaseHelper.getTypeOfWork(typeOfWorkID)
             if (typeOfWorkID == 2) {
                 titleEnable.value = false
             }
 
             val listTeachers = mutableListOf<String>()
-            listOfTeachers = AppGlobal.DataBaseHelper.getListOfTeachers()
+            listOfTeachers = dataBaseHelper.getListOfTeachers()
 
             for (teacher in listOfTeachers)
                 listTeachers.add("${teacher.lastName} ${teacher.firstName} ${teacher.middleName}")
@@ -62,7 +63,7 @@ class CompleteRegistrationVM : ViewModel() {
         else {
             val registrationDate = Calendar.getInstance().timeInMillis
             if (titleOfWork.isEmpty()) {
-                val result = AppGlobal.DataBaseHelper.registerTest(
+                val result = dataBaseHelper.registerTest(
                     studentID,
                     subjectID,
                     listOfTeachers[teacherPosition].id,
@@ -70,7 +71,7 @@ class CompleteRegistrationVM : ViewModel() {
                 )
                 if (result == -1L) errorInsertMessage.value = true
             } else {
-                val result = AppGlobal.DataBaseHelper.registerCourseWork(
+                val result = dataBaseHelper.registerCourseWork(
                     studentID,
                     subjectID,
                     listOfTeachers[teacherPosition].id,

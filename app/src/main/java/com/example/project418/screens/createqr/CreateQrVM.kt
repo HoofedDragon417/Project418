@@ -10,6 +10,7 @@ import com.example.project418.R
 import com.example.project418.common.AppGlobal
 import com.example.project418.models.Student
 import com.example.project418.models.Subject
+import com.example.project418.storage.DataBaseHelper
 import com.example.project418.storage.UserConfig
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
-class CreateQrVM : ViewModel() {
+class CreateQrVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
     private var listOfStudents = listOf<Student>()
     private var listOfSubjects = listOf<Subject>()
 
@@ -33,8 +34,8 @@ class CreateQrVM : ViewModel() {
 
     fun getLists() {
         viewModelScope.launch {
-            listOfStudents = AppGlobal.DataBaseHelper.getListOfStudents()
-            listOfSubjects = AppGlobal.DataBaseHelper.getListOfSubjects()
+            listOfStudents = dataBaseHelper.getListOfStudents()
+            listOfSubjects = dataBaseHelper.getListOfSubjects()
 
             val listStudents = mutableListOf<String>()
             val listSubjects = mutableListOf<String>()

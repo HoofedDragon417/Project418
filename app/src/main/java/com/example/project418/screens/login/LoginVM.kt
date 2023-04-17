@@ -5,19 +5,20 @@ import androidx.lifecycle.viewModelScope
 import com.example.project418.common.AppGlobal
 import com.example.project418.common.Screens
 import com.example.project418.models.Department
+import com.example.project418.storage.DataBaseHelper
 import com.example.project418.storage.UserConfig
 import com.github.terrakok.cicerone.Router
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class LoginVMImpl(private val router: Router) : ViewModel(), LoginVM {
+class LoginVMImpl(private val router: Router, private val dataBaseHelper: DataBaseHelper) :
+    ViewModel(), LoginVM {
 
     val showAlertDialog = MutableStateFlow(false)
 
     override fun authorization(user: Department) {
         viewModelScope.launch {
-            val departmentID = AppGlobal.DataBaseHelper.singIn(user)
+            val departmentID = dataBaseHelper.singIn(user)
 
             if (departmentID != FALSE_USER) {
                 UserConfig.saveID(departmentID)

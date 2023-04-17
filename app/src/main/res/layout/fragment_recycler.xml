@@ -5,7 +5,6 @@
     android:id="@+id/recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".tabs.students.StudentsFragment">
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
 </androidx.recyclerview.widget.RecyclerView>

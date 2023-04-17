@@ -1,26 +1,24 @@
-package com.example.project418.tabs.students
+package com.example.project418.screens.tabs.students
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.project418.adapters.recycler.StudentAdapter
 import com.example.project418.databinding.FragmentRecyclerBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class StudentsFragment : Fragment() {
 
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: StudentsVM by viewModels{
-        StudentsVM.Factory(requireContext().applicationContext)
-    }
+    private val viewModel: StudentsVM by activityViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

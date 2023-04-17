@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.project418.R
 import com.example.project418.common.BaseFragment
@@ -15,6 +14,7 @@ import com.example.project418.databinding.FragmentCompleteRegistrationBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 private const val QR_CONTENT = "qr_content"
 
@@ -23,7 +23,7 @@ class CompleteRegistrationFragment : BaseFragment() {
     private var _binding: FragmentCompleteRegistrationBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: CompleteRegistrationVM by viewModels()
+    private val viewModel: CompleteRegistrationVM by activityViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

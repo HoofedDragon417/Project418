@@ -1,10 +1,13 @@
 package com.example.project418.common
 
 import android.app.Application
-import com.example.project418.modules.cameraModule
-import com.example.project418.modules.navigationModule
-import com.example.project418.modules.loginModule
-import com.example.project418.modules.mainModule
+import com.example.project418.modules.*
+import com.example.project418.screens.completeregistration.di.completeRegistrationModule
+import com.example.project418.screens.createqr.di.createQrModule
+import com.example.project418.screens.main.di.mainModule
+import com.example.project418.screens.tabs.di.tabModule
+import com.example.project418.screens.tabs.subjects.di.subjectModule
+import com.example.project418.screens.tabs.teachers.di.teacherModule
 import com.example.project418.storage.DataBaseHelper
 import com.example.project418.storage.UserConfig
 import org.koin.android.ext.koin.androidContext
@@ -34,7 +37,10 @@ class AppGlobal : Application() {
                 navigationModule,
                 loginModule,
                 mainModule,
-                cameraModule
+                cameraModule,
+                completeRegistrationModule,
+                createQrModule,
+                tabModule
             )
         }
     }

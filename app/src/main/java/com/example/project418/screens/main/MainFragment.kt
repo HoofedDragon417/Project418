@@ -9,10 +9,10 @@ import com.example.project418.R
 import com.example.project418.adapters.pager.ViewPagerAdapter
 import com.example.project418.common.BaseFragment
 import com.example.project418.databinding.FragmentMainBinding
-import com.example.project418.tabs.journal.JournalFragment
-import com.example.project418.tabs.students.StudentsFragment
-import com.example.project418.tabs.subjects.SubjectsFragment
-import com.example.project418.tabs.teachers.TeachersFragment
+import com.example.project418.screens.tabs.journal.JournalFragment
+import com.example.project418.screens.tabs.students.StudentsFragment
+import com.example.project418.screens.tabs.subjects.SubjectsFragment
+import com.example.project418.screens.tabs.teachers.TeachersFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
