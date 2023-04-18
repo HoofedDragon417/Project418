@@ -3,13 +3,10 @@ package com.example.project418.screens.camera
 import android.Manifest
 import android.os.Bundle
 import android.util.Log
-import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -23,6 +20,9 @@ import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.fondesa.kpermissions.extension.send
 import com.github.terrakok.cicerone.Router
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
@@ -64,45 +64,33 @@ class CameraFragment : BaseFragment() {
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
-            val imageAnalysis = ImageAnalysis.Builder().setTargetResolution(
-                Size(
-                    binding.cameraPreview.width / 6,
-                    binding.cameraPreview.height / 6
-                )
-            ).setBackpressureStrategy(STRATEGY_KEEP_ONLY_LATEST).build()
+            val options =
+                GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                    .build()
 
-            imageAnalysis.setAnalyzer(
-                ContextCompat.getMainExecutor(requireContext()),
-                QrCodeAnalyzer { result ->
-                    cameraProvider.unbindAll()
-                    if (viewModel.checkContent(result)) {
-                        val alertDialog = MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(AppGlobal.Instance.getString(R.string.qr_error_title))
-                            .setMessage(AppGlobal.Instance.getString(R.string.qr_error_message))
-                            .setPositiveButton("OK") { dialog, which ->
-                                dialog.dismiss()
-                                cameraProvider.bindToLifecycle(
-                                    viewLifecycleOwner, cameraSelector,
-                                    previewMain, imageAnalysis
-                                )
-                            }
-                        alertDialog.create()
-                        alertDialog.show()
-                    }
+            val scanner = GmsBarcodeScanning.getClient(AppGlobal.Instance, options)
+
+            scanner.startScan().addOnSuccessListener { barcode ->
+                if (viewModel.checkContent(requireNotNull(barcode.rawValue))) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(AppGlobal.Instance.getString(R.string.qr_error_title))
+                        .setMessage(AppGlobal.Instance.getString(R.string.qr_error_message))
+                        .setPositiveButton("OK") { dialog, _ ->
+                            dialog.dismiss()
+                        }.create().show()
                 }
-            )
+            }
 
             try {
                 cameraProvider.bindToLifecycle(
                     viewLifecycleOwner, cameraSelector,
-                    previewMain, imageAnalysis
+                    previewMain
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "Use case binding failed", e)
             }
         }, ContextCompat.getMainExecutor(requireContext()))
     }
-
 
     companion object {
         private const val TAG = "CameraXApp"
