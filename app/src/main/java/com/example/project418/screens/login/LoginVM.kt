@@ -2,7 +2,6 @@ package com.example.project418.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.project418.common.AppGlobal
 import com.example.project418.common.Screens
 import com.example.project418.models.Department
 import com.example.project418.storage.DataBaseHelper
@@ -11,12 +10,12 @@ import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class LoginVMImpl(private val router: Router, private val dataBaseHelper: DataBaseHelper) :
-    ViewModel(), LoginVM {
+class LoginVM(private val router: Router, private val dataBaseHelper: DataBaseHelper) :
+    ViewModel() {
 
     val showAlertDialog = MutableStateFlow(false)
 
-    override fun authorization(user: Department) {
+    fun authorization(user: Department) {
         viewModelScope.launch {
             val departmentID = dataBaseHelper.singIn(user)
 
@@ -27,16 +26,11 @@ class LoginVMImpl(private val router: Router, private val dataBaseHelper: DataBa
         }
     }
 
-    override fun dismissAlertDialog() {
+    fun dismissAlertDialog() {
         showAlertDialog.value = false
     }
 
     companion object {
         private const val FALSE_USER = -1
     }
-}
-
-interface LoginVM {
-    fun authorization(user: Department)
-    fun dismissAlertDialog()
 }

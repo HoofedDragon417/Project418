@@ -11,14 +11,14 @@ import com.example.project418.databinding.FragmentRecyclerBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SubjectsFragment : Fragment() {
 
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: SubjectsVM by activityViewModel()
+    private val viewModel: SubjectsVM by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

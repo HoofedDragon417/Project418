@@ -1,4 +1,4 @@
-package com.example.project418.screens.completeregistration
+package com.example.project418.screens.completeregistration.screens.coursework
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,13 +8,13 @@ import com.example.project418.models.Teachers
 import com.example.project418.storage.DataBaseHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
 
-class CompleteRegistrationVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
+class CompleteCourseworkVM(private val dataBaseHelper: DataBaseHelper) : ViewModel() {
+
     val student = MutableStateFlow("")
     val subject = MutableStateFlow("")
     val typeOfWork = MutableStateFlow("")
-    val titleEnable = MutableStateFlow(true)
 
     val stringListOfTeachers = MutableStateFlow(listOf<String>())
 
@@ -32,15 +32,12 @@ class CompleteRegistrationVM(private val dataBaseHelper: DataBaseHelper) : ViewM
         viewModelScope.launch {
             val (studentID, subjectID, typeOfWorkID) = qrContent.split(",").map { it.toInt() }
 
-            this@CompleteRegistrationVM.studentID = studentID
-            this@CompleteRegistrationVM.subjectID = subjectID
+            this@CompleteCourseworkVM.studentID = studentID
+            this@CompleteCourseworkVM.subjectID = subjectID
 
             student.value = dataBaseHelper.getStudent(studentID)
             subject.value = dataBaseHelper.getSubject(subjectID)
             typeOfWork.value = dataBaseHelper.getTypeOfWork(typeOfWorkID)
-            if (typeOfWorkID == 2) {
-                titleEnable.value = false
-            }
 
             val listTeachers = mutableListOf<String>()
             listOfTeachers = dataBaseHelper.getListOfTeachers()
@@ -62,15 +59,7 @@ class CompleteRegistrationVM(private val dataBaseHelper: DataBaseHelper) : ViewM
             errorTeacherMessage.value = AppGlobal.Instance.getString(R.string.choose_teacher)
         else {
             val registrationDate = Calendar.getInstance().timeInMillis
-            if (titleOfWork.isEmpty()) {
-                val result = dataBaseHelper.registerTest(
-                    studentID,
-                    subjectID,
-                    listOfTeachers[teacherPosition].id,
-                    registrationDate
-                )
-                if (result == -1L) errorInsertMessage.value = true
-            } else {
+            if (titleOfWork.isNotEmpty()) {
                 val result = dataBaseHelper.registerCourseWork(
                     studentID,
                     subjectID,
@@ -79,7 +68,7 @@ class CompleteRegistrationVM(private val dataBaseHelper: DataBaseHelper) : ViewM
                     registrationDate
                 )
                 if (result == -1L) errorInsertMessage.value = true
-            }
+            } else errorInsertMessage.value = true
         }
     }
 

@@ -1,10 +1,7 @@
 package com.example.project418.screens.tabs.journal
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.project418.common.AppGlobal
 import com.example.project418.models.Journal
 import com.example.project418.storage.DataBaseHelper
 import kotlinx.coroutines.flow.MutableStateFlow

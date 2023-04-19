@@ -15,6 +15,7 @@ import com.example.project418.screens.tabs.subjects.SubjectsFragment
 import com.example.project418.screens.tabs.teachers.TeachersFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //TODO: Почитать про insets
 
@@ -23,7 +24,7 @@ class MainFragment : BaseFragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: MainVMImpl by activityViewModel()
+    private val viewModel: MainVM by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

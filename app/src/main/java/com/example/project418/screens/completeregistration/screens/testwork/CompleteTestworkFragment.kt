@@ -1,4 +1,4 @@
-package com.example.project418.screens.completeregistration
+package com.example.project418.screens.completeregistration.screens.testwork
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,23 +7,21 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.project418.R
-import com.example.project418.common.BaseFragment
-import com.example.project418.databinding.FragmentCompleteRegistrationBinding
+import com.example.project418.databinding.FragmentCompleteTestworkBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private const val QR_CONTENT = "qr_content"
+class CompleteTestworkFragment : Fragment() {
 
-class CompleteRegistrationFragment : BaseFragment() {
-
-    private var _binding: FragmentCompleteRegistrationBinding? = null
+    private var _binding: FragmentCompleteTestworkBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: CompleteRegistrationVM by activityViewModel()
+    private val viewModel: CompleteTestworkVM by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +32,7 @@ class CompleteRegistrationFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCompleteRegistrationBinding.inflate(inflater, container, false)
+        _binding = FragmentCompleteTestworkBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -53,13 +51,7 @@ class CompleteRegistrationFragment : BaseFragment() {
         }
 
         binding.btnCompleteRegistration.setOnClickListener {
-            val title = binding.etTitleOfWork.text.toString()
-            viewModel.registrationWork(title)
-        }
-
-        View.OnClickListener {
-            binding.etTeacher.isFocusable = false
-            binding.etTitleOfWork.isFocusable = false
+            viewModel.registrationWork()
         }
     }
 
@@ -95,18 +87,16 @@ class CompleteRegistrationFragment : BaseFragment() {
                         dialog.dismiss()
                     }.create().show()
         }.launchIn(lifecycleScope)
-
-        viewModel.titleEnable.onEach { enable ->
-            binding.titleContainer.isEnabled = enable
-        }.launchIn(lifecycleScope)
     }
 
     companion object {
-        fun newInstance(content: String) = CompleteRegistrationFragment().apply {
-            arguments = bundleOf(
-                QR_CONTENT to content
-            )
-        }
-    }
+        private const val QR_CONTENT = "qr_content"
 
+        fun newInstance(content: String) =
+            CompleteTestworkFragment().apply {
+                arguments = bundleOf(
+                    QR_CONTENT to content
+                )
+            }
+    }
 }
