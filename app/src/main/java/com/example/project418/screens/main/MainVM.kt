@@ -5,19 +5,13 @@ import com.example.project418.common.Screens
 import com.example.project418.storage.UserConfig
 import com.github.terrakok.cicerone.Router
 
-class MainVMImpl(private val router: Router) : ViewModel(), MainVM {
-    override fun createQr() = router.navigateTo(Screens.CreateQr())
+class MainVM(private val router: Router) : ViewModel() {
+    fun createQr() = router.navigateTo(Screens.CreateQr())
 
-    override fun scanQr() = router.navigateTo(Screens.Camera())
+    fun scanQr() = router.navigateTo(Screens.Camera())
 
-    override fun logout() {
+    fun logout() {
         UserConfig.clearID()
         router.newRootScreen(Screens.Login())
     }
-}
-
-interface MainVM {
-    fun createQr()
-    fun scanQr()
-    fun logout()
 }

@@ -24,7 +24,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: LoginVMImpl by activityViewModel()
+    private val viewModel: LoginVM by activityViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

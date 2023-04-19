@@ -5,22 +5,22 @@ import com.example.project418.common.Screens
 import com.example.project418.storage.UserConfig
 import com.github.terrakok.cicerone.Router
 
-class CameraVMImpl(private val router: Router) : ViewModel(), CameraVM {
-    override fun checkContent(result: String): Boolean {
+class CameraVM(private val router: Router) : ViewModel() {
+     fun checkContent(result: String): Boolean {
         val qrContentTemplate = Regex("\\d+,\\d+,\\d;\\d+")
 
         return if (result.matches(qrContentTemplate)) {
             val (qrData, departmentID) = result.split(";")
             if (departmentID.toInt() == UserConfig.getID()) {
-                router.navigateTo(Screens.CheckQr(qrData))
+                val (student, subject, tof) = qrData.split(",").map { it.toInt() }
+                if (tof == 1)
+                    router.navigateTo(Screens.Coursework(qrData))
+                if (tof == 2)
+                    router.navigateTo(Screens.Testwork(qrData))
                 false
             } else true
         } else {
             true
         }
     }
-}
-
-interface CameraVM {
-    fun checkContent(result: String): Boolean
 }

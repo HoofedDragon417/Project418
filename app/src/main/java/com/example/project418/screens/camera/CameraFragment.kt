@@ -25,13 +25,14 @@ import com.github.terrakok.cicerone.Router
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CameraFragment : BaseFragment() {
 
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: CameraVMImpl by activityViewModel()
+    private val viewModel: CameraVM by activityViewModel()
 
     private val router: Router by inject()
 

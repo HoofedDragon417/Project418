@@ -8,7 +8,7 @@ import com.example.project418.R
 import com.example.project418.databinding.RecyclerJournalBinding
 import com.example.project418.models.Journal
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class JournalAdapter(private val context: Context, private val items: List<Journal>) :
     RecyclerView.Adapter<JournalAdapter.JournalViewHOlder>() {
@@ -20,8 +20,11 @@ class JournalAdapter(private val context: Context, private val items: List<Journ
             val pattern = context.getString(R.string.registration_pattern)
             val sdf = SimpleDateFormat(pattern, Locale.getDefault())
 
-            if (item.title != "-") binding.tvTitleOfWork.text =
-                context.getString(R.string.title_recycler, item.title)
+            binding.tvTitleOfWork.text =
+                context.getString(
+                    R.string.title_recycler,
+                    item.title
+                )
             binding.tvStudent.text = context.getString(R.string.student_recycler, item.student)
             binding.tvSubject.text = context.getString(R.string.subject_recycler, item.subject)
             binding.tvTypeOfWork.text =

@@ -23,7 +23,7 @@ class MainFragment : BaseFragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: MainVMImpl by activityViewModel()
+    private val viewModel: MainVM by activityViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
